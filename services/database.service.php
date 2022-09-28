@@ -68,8 +68,8 @@ class DatabaseService
     function insertOne($body = []){ //TODO insertMany
         $columns = "";
         $values = "";
-        if(isset($fields["Id_$this->table"])){
-            unset($fields["Id_$this->table"]);
+        if(isset($body["Id_$this->table"])){
+            unset($body["Id_$this->table"]);
         }
         $valuesToBind = array();
         foreach ($body as $k => $v) {

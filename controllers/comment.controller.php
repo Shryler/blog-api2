@@ -1,4 +1,6 @@
 <?php class CommentController extends DatabaseController {
-    public function affectDataToRow(&$row, $sub_rows){}
 
+    public function affectDataToRow(&$row, $sub_rows){
+
+    }
 }?>

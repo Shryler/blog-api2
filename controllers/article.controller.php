@@ -3,16 +3,16 @@
     public function affectDataToRow(&$row, $sub_rows){
 
         if(isset($sub_rows['appuser'])){
-            $appuser = array_values(array_filter($sub_rows['appuser'], function($item) use ($row) { 
+            $appuser = array_filter($sub_rows['appuser'], function($item) use ($row) { 
                 return $item->Id_appUser == $row->Id_appUser;
-            }));
-            $row->appuser = count($appuser) == 1 ? array_shift($appuser) : null;
+            });
+            $row->author = count($appuser) == 1 ? array_shift($appuser) : null;
         }
 
         if(isset($sub_rows['theme'])){
-            $theme = array_values(array_filter($sub_rows['theme'], function($item) use ($row) { 
+            $theme = array_filter($sub_rows['theme'], function($item) use ($row) { 
                 return $item->Id_theme == $row->Id_theme;
-            }));
+            });
             $row->theme = count($theme) == 1 ? array_shift($theme) : null;
         }
 

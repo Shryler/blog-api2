@@ -65,7 +65,7 @@ abstract class DatabaseController
                 foreach($through_table_rows as $through_table_row){
                     $row_to_add = array_filter($final_table_rows, 
                         function($item) use ($through_table_row, $final_table) { 
-                            $prop = 'Id_' . $final_table;
+                            $prop = 'Id_'.$final_table;
                             return $item->{$prop} == $through_table_row->{$prop};
                         });
                     $through_table_row->$final_table = count($row_to_add) == 1 ? array_pop($row_to_add) : null;
@@ -103,10 +103,12 @@ abstract class DatabaseController
                 foreach($through_table_rows as $through_table_row){
                     $row_to_add = array_filter($final_table_rows, 
                         function($item) use ($through_table_row, $final_table) { 
-                            $prop = 'Id_' . $final_table;
+                            $prop = 'Id_'.$final_table;
                             return $item->{$prop} == $through_table_row->{$prop};
                         });
-                    $through_table_row->$final_table = count($row_to_add) == 1 ? array_pop($row_to_add) : null;
+                    if(count($row_to_add) == 1){
+                        $through_table_row->$final_table = array_pop($row_to_add);
+                    }
                 }
                 $sub_rows[$final_table] = $through_table_rows;
                 continue;
@@ -138,10 +140,19 @@ abstract class DatabaseController
     }
 
     public function softDelete($id){
-        return "Delete (soft) row with id = $id in table $this->table";
+        $dbs = new DatabaseService($this->table);
+        $row = $dbs->updateOneV2(["Id_$this->table" => $id,"is_deleted" => 1]);
+        if(isset($row) && $row == false){
+            return false;
+        }
+        return !isset($row);
     }
 
     public function hardDelete($id){
-        return "Delete (hard) row with id = $id in table $this->table";
+        $dbs = new DatabaseService($this->table);
+        $row = $dbs->deleteOne(["Id_$this->table" => $id]);
+        return $row;
     }
 }
+
+?>
